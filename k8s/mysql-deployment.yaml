@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: altus-mysql-deployment
+  name: globalvault-mysql-deployment
   labels:
-    app: altus-mysql
+    app: globalvault-mysql
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: altus-mysql
+      app: globalvault-mysql
   template:
     metadata:
       labels:
-        app: altus-mysql
+        app: globalvault-mysql
     spec:
       containers:
       - name: mysql
@@ -23,12 +23,12 @@ spec:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: altus-db-secret
+              name: globalvault-db-secret
               key: DB_PASSWORD_VALUE
         - name: MYSQL_DATABASE
           valueFrom:
             configMapKeyRef:
-              name: altus-db-config-map
+              name: globalvault-db-config-map
               key: DB_SCHEMA_VALUE
         volumeMounts:
         - name: mysql-persistent-storage
@@ -36,17 +36,17 @@ spec:
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
-          claimName: altus-db-pvc
+          claimName: globalvault-db-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: altus-app-db-service
+  name: globalvault-app-db-service
   labels:
-    app: altus-mysql
+    app: globalvault-mysql
 spec:
   selector:
-    app: altus-mysql
+    app: globalvault-mysql
   ports:
   - port: 3306
     targetPort: 3306

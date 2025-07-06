@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: altus-app-ingress
+  name: globalvault-app-ingress
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
@@ -10,16 +10,16 @@ metadata:
 spec:
   tls:
   - hosts:
-    - altus-app.yourdomain.com
-    secretName: altus-app-tls
+    - globalvault-app.yourdomain.com
+    secretName: globalvault-app-tls
   rules:
-  - host: altus-app.yourdomain.com
+  - host: globalvault-app.yourdomain.com
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: altus-app-service
+            name: globalvault-app-service
             port:
               number: 80 

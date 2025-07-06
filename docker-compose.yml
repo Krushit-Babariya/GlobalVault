@@ -3,19 +3,19 @@ version: '3.8'
 services:
   mysql:
     image: mysql:8.0
-    container_name: altus-mysql
+    container_name: globalvault-mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: altus
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: globalvault
+      MYSQL_USER: globalvault_user
+      MYSQL_PASSWORD: globalvault_password
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - altus-network
+      - globalvault-network
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s
@@ -23,13 +23,13 @@ services:
 
   app:
     build: .
-    container_name: altus-app
+    container_name: globalvault-app
     ports:
       - "8080:8080"
     environment:
       DB_DRIVER_NAME_VALUE: com.mysql.cj.jdbc.Driver
       DB_HOST_SERVICE_NAME_VALUE: mysql
-      DB_SCHEMA_VALUE: altus
+      DB_SCHEMA_VALUE: globalvault
       DB_PORT_VALUE: 3306
       DB_USERNAME_VALUE: root
       DB_PASSWORD_VALUE: root
@@ -38,12 +38,12 @@ services:
       mysql:
         condition: service_healthy
     networks:
-      - altus-network
+      - globalvault-network
     restart: unless-stopped
 
 volumes:
   mysql_data:
 
 networks:
-  altus-network:
+  globalvault-network:
     driver: bridge 

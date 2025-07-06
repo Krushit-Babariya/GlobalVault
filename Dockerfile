@@ -1,11 +1,16 @@
 FROM openjdk:17-jdk-slim
 
+AUTHOR="Krushit"
+VERSION="1.0.0"
+DATE="2025-07-06"
+PROJECT_NAME="GlobalVault"
+
 WORKDIR /app
 
-COPY target/spring-boot-web-app-0.0.1-SNAPSHOT.jar app.jar
+COPY target/*.jar app.jar
 
 EXPOSE 8080
 
 ENV JAVA_OPTS="-Xmx512m -Xms256m"
 
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"] 
+ENTRYPOINT ["java", "-jar", "app.jar"] 

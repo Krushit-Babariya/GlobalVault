@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
- name: altus-db-pv
+ name: globalvault-db-pv
  labels: 
-  name: altus-db-pv
+  name: globalvault-db-pv
 spec:
   capacity: 
    storage: 4Gi

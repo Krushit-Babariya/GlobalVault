@@ -1,0 +1,369 @@
+{
+	"info": {
+		"_postman_id": "countries-api-collection",
+		"name": "Countries API",
+		"description": "Complete REST API collection for Countries CRUD operations with continents data",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "countries-api"
+	},
+	"item": [
+		{
+			"name": "Get All Countries",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/countries",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"countries"
+					]
+				},
+				"description": "Retrieve all countries ordered by continent and name"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Country by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/countries/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"countries",
+						"1"
+					]
+				},
+				"description": "Retrieve a specific country by its ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Country by Name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/countries/name/United States",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"countries",
+						"name",
+						"United States"
+					]
+				},
+				"description": "Retrieve a specific country by its name"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Countries by Continent",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/countries/continent/Asia",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"countries",
+						"continent",
+						"Asia"
+					]
+				},
+				"description": "Retrieve all countries from a specific continent"
+			},
+			"response": []
+		},
+		{
+			"name": "Search Countries by Name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/countries/search/name?name=United",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"countries",
+						"search",
+						"name"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "United"
+						}
+					]
+				},
+				"description": "Search countries by name (case-insensitive)"
+			},
+			"response": []
+		},
+		{
+			"name": "Search Countries by Continent",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/countries/search/continent?continent=America",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"countries",
+						"search",
+						"continent"
+					],
+					"query": [
+						{
+							"key": "continent",
+							"value": "America"
+						}
+					]
+				},
+				"description": "Search countries by continent (case-insensitive)"
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Continents",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/countries/continents",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"countries",
+						"continents"
+					]
+				},
+				"description": "Retrieve all distinct continents"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Countries with Population > 100M",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/countries/population/greater-than/100000000",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"countries",
+						"population",
+						"greater-than",
+						"100000000"
+					]
+				},
+				"description": "Retrieve countries with population greater than specified value"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Statistics",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/countries/statistics",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"countries",
+						"statistics"
+					]
+				},
+				"description": "Retrieve comprehensive statistics about countries and continents"
+			},
+			"response": []
+		},
+		{
+			"name": "Create New Country",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"New Zealand\",\n  \"continent\": \"Australia\",\n  \"capital\": \"Wellington\",\n  \"population\": 5084300,\n  \"area\": 270467.0,\n  \"currency\": \"NZD\",\n  \"language\": \"English\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/countries",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"countries"
+					]
+				},
+				"description": "Create a new country with all details"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Country (Minimal)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Test Country\",\n  \"continent\": \"Europe\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/countries",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"countries"
+					]
+				},
+				"description": "Create a new country with only required fields (name and continent)"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Country",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Updated Country Name\",\n  \"continent\": \"Asia\",\n  \"capital\": \"New Capital\",\n  \"population\": 50000000,\n  \"area\": 100000.0,\n  \"currency\": \"USD\",\n  \"language\": \"English\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/countries/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"countries",
+						"1"
+					]
+				},
+				"description": "Update an existing country by ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Country",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/countries/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"countries",
+						"1"
+					]
+				},
+				"description": "Delete a country by ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Bulk Create Countries",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n  {\n    \"name\": \"Bulk Country 1\",\n    \"continent\": \"Europe\",\n    \"capital\": \"Capital 1\",\n    \"population\": 1000000,\n    \"area\": 50000.0,\n    \"currency\": \"EUR\",\n    \"language\": \"English\"\n  },\n  {\n    \"name\": \"Bulk Country 2\",\n    \"continent\": \"Asia\",\n    \"capital\": \"Capital 2\",\n    \"population\": 2000000,\n    \"area\": 75000.0,\n    \"currency\": \"USD\",\n    \"language\": \"Spanish\"\n  }\n]"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/countries/bulk",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"countries",
+						"bulk"
+					]
+				},
+				"description": "Create multiple countries in a single request"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+} 
