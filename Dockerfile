@@ -1,9 +1,9 @@
 FROM openjdk:17-jdk-slim
 
-AUTHOR="Krushit"
-VERSION="1.0.0"
-DATE="2025-07-06"
-PROJECT_NAME="GlobalVault"
+LABEL maintainer="Krushit"
+LABEL version="1.0.0"
+LABEL date="2025-07-06"
+LABEL project="GlobalVault"
 
 WORKDIR /app
 
