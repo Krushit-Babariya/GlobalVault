@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: altus-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: altus
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - altus-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  app:
+    build: .
+    container_name: altus-app
+    ports:
+      - "8080:8080"
+    environment:
+      DB_DRIVER_NAME_VALUE: com.mysql.cj.jdbc.Driver
+      DB_HOST_SERVICE_NAME_VALUE: mysql
+      DB_SCHEMA_VALUE: altus
+      DB_PORT_VALUE: 3306
+      DB_USERNAME_VALUE: root
+      DB_PASSWORD_VALUE: root
+      SERVER_PORT: 8080
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - altus-network
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+
+networks:
+  altus-network:
+    driver: bridge 

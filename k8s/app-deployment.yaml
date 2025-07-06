@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: altus-app-deployment
+  labels:
+    app: altus-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: altus-app
+  template:
+    metadata:
+      labels:
+        app: altus-app
+    spec:
+      containers:
+      - name: altus-app
+        image: altus-app:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DB_DRIVER_NAME_VALUE
+          valueFrom:
+            configMapKeyRef:
+              name: altus-db-config-map
+              key: DB_DRIVER_NAME_VALUE
+        - name: DB_HOST_SERVICE_NAME_VALUE
+          valueFrom:
+            configMapKeyRef:
+              name: altus-db-config-map
+              key: DB_HOST_SERVICE_NAME_VALUE
+        - name: DB_SCHEMA_VALUE
+          valueFrom:
+            configMapKeyRef:
+              name: altus-db-config-map
+              key: DB_SCHEMA_VALUE
+        - name: DB_PORT_VALUE
+          valueFrom:
+            configMapKeyRef:
+              name: altus-db-config-map
+              key: DB_PORT_VALUE
+        - name: DB_USERNAME_VALUE
+          valueFrom:
+            secretKeyRef:
+              name: altus-db-secret
+              key: DB_USERNAME_VALUE
+        - name: DB_PASSWORD_VALUE
+          valueFrom:
+            secretKeyRef:
+              name: altus-db-secret
+              key: DB_PASSWORD_VALUE
+        - name: SERVER_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: altus-db-config-map
+              key: SERVER_PORT
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: altus-app-service
+  labels:
+    app: altus-app
+spec:
+  selector:
+    app: altus-app
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: altus-app-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: altus-app-deployment
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80 
+...

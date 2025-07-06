@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Country - Countries App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="/" class="flex items-center space-x-2">
+                            <i class="fas fa-globe-americas text-primary-600 text-2xl"></i>
+                            <span class="text-xl font-bold text-gray-900">Countries App</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/" class="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                        <i class="fas fa-home mr-1"></i>Home
+                    </a>
+                    <a href="/countries" class="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                        <i class="fas fa-list mr-1"></i>Countries
+                    </a>
+                    <a href="/add-country" class="text-primary-600 px-3 py-2 rounded-md text-sm font-medium">
+                        <i class="fas fa-plus mr-1"></i>Add Country
+                    </a>
+                    <a href="/statistics" class="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                        <i class="fas fa-chart-bar mr-1"></i>Statistics
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto py-6 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="bg-white shadow rounded-lg p-6 mb-6">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <i class="fas fa-plus-circle text-primary-600 text-3xl"></i>
+                </div>
+                <div class="ml-4">
+                    <h1 class="text-3xl font-bold text-gray-900">Add New Country</h1>
+                    <p class="mt-1 text-sm text-gray-600">Enter the details of the country you want to add</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <form id="addCountryForm" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Country Name -->
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                            Country Name <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="name" name="name" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                               placeholder="Enter country name">
+                        <p class="mt-1 text-sm text-gray-500">The official name of the country</p>
+                    </div>
+
+                    <!-- Continent -->
+                    <div>
+                        <label for="continent" class="block text-sm font-medium text-gray-700 mb-2">
+                            Continent <span class="text-red-500">*</span>
+                        </label>
+                        <select id="continent" name="continent" required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                            <option value="">Select a continent</option>
+                            <option value="Asia">Asia</option>
+                            <option value="Europe">Europe</option>
+                            <option value="Africa">Africa</option>
+                            <option value="North America">North America</option>
+                            <option value="South America">South America</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Antarctica">Antarctica</option>
+                        </select>
+                        <p class="mt-1 text-sm text-gray-500">The continent where the country is located</p>
+                    </div>
+
+                    <!-- Capital -->
+                    <div>
+                        <label for="capital" class="block text-sm font-medium text-gray-700 mb-2">
+                            Capital City
+                        </label>
+                        <input type="text" id="capital" name="capital"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                               placeholder="Enter capital city">
+                        <p class="mt-1 text-sm text-gray-500">The capital city of the country</p>
+                    </div>
+
+                    <!-- Population -->
+                    <div>
+                        <label for="population" class="block text-sm font-medium text-gray-700 mb-2">
+                            Population
+                        </label>
+                        <input type="number" id="population" name="population" min="0"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                               placeholder="Enter population">
+                        <p class="mt-1 text-sm text-gray-500">Total population of the country</p>
+                    </div>
+
+                    <!-- Area -->
+                    <div>
+                        <label for="area" class="block text-sm font-medium text-gray-700 mb-2">
+                            Area (km²)
+                        </label>
+                        <input type="number" id="area" name="area" min="0" step="0.01"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                               placeholder="Enter area in square kilometers">
+                        <p class="mt-1 text-sm text-gray-500">Total land area in square kilometers</p>
+                    </div>
+
+                    <!-- Currency -->
+                    <div>
+                        <label for="currency" class="block text-sm font-medium text-gray-700 mb-2">
+                            Currency
+                        </label>
+                        <input type="text" id="currency" name="currency"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                               placeholder="Enter currency">
+                        <p class="mt-1 text-sm text-gray-500">Official currency of the country</p>
+                    </div>
+
+                    <!-- Language -->
+                    <div>
+                        <label for="language" class="block text-sm font-medium text-gray-700 mb-2">
+                            Language
+                        </label>
+                        <input type="text" id="language" name="language"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                               placeholder="Enter official language">
+                        <p class="mt-1 text-sm text-gray-500">Official language of the country</p>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+                    <a href="/countries" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        Cancel
+                    </a>
+                    <button type="submit" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        <i class="fas fa-save mr-2"></i>Save Country
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Sample Data Section -->
+        <div class="bg-white shadow rounded-lg p-6 mt-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Sample Countries</h3>
+            <p class="text-sm text-gray-600 mb-4">Click on any sample country to pre-fill the form:</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <button onclick="fillSampleData('United States', 'North America', 'Washington D.C.', 331002651, 9833517, 'USD', 'English')" 
+                        class="p-3 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors text-left">
+                    <div class="font-medium text-gray-900">United States</div>
+                    <div class="text-sm text-gray-600">North America</div>
+                </button>
+                <button onclick="fillSampleData('Japan', 'Asia', 'Tokyo', 125836021, 377975, 'JPY', 'Japanese')" 
+                        class="p-3 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors text-left">
+                    <div class="font-medium text-gray-900">Japan</div>
+                    <div class="text-sm text-gray-600">Asia</div>
+                </button>
+                <button onclick="fillSampleData('Germany', 'Europe', 'Berlin', 83190556, 357022, 'EUR', 'German')" 
+                        class="p-3 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors text-left">
+                    <div class="font-medium text-gray-900">Germany</div>
+                    <div class="text-sm text-gray-600">Europe</div>
+                </button>
+                <button onclick="fillSampleData('Brazil', 'South America', 'Brasília', 212559417, 8515767, 'BRL', 'Portuguese')" 
+                        class="p-3 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors text-left">
+                    <div class="font-medium text-gray-900">Brazil</div>
+                    <div class="text-sm text-gray-600">South America</div>
+                </button>
+                <button onclick="fillSampleData('South Africa', 'Africa', 'Pretoria', 59308690, 1221037, 'ZAR', 'English')" 
+                        class="p-3 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors text-left">
+                    <div class="font-medium text-gray-900">South Africa</div>
+                    <div class="text-sm text-gray-600">Africa</div>
+                </button>
+                <button onclick="fillSampleData('Australia', 'Australia', 'Canberra', 25499884, 7692024, 'AUD', 'English')" 
+                        class="p-3 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors text-left">
+                    <div class="font-medium text-gray-900">Australia</div>
+                    <div class="text-sm text-gray-600">Australia</div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-gray-500 text-sm">
+                <p>&copy; 2024 Countries App. Built with Spring Boot & Tailwind CSS.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script th:src="@{/js/app.js}"></script>
+    <script th:src="@{/js/add-country.js}"></script>
+</body>
+</html> 

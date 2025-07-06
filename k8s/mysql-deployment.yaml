@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: altus-mysql-deployment
+  labels:
+    app: altus-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: altus-mysql
+  template:
+    metadata:
+      labels:
+        app: altus-mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: altus-db-secret
+              key: DB_PASSWORD_VALUE
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: altus-db-config-map
+              key: DB_SCHEMA_VALUE
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: altus-db-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: altus-app-db-service
+  labels:
+    app: altus-mysql
+spec:
+  selector:
+    app: altus-mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+  type: ClusterIP
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+  labels:
+    storage: altus-db-storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: gp2
+...
