@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: globalvault-app
-        image: globalvault-app:latest
+        image: krushit040/global-vault:latest
         ports:
         - containerPort: 8080
         env:
