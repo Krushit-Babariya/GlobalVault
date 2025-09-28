@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import software.amazon.awssdk.services.lambda.LambdaClient;
+import software.amazon.awssdk.services.lambda.model.InvokeRequest;
+import software.amazon.awssdk.services.lambda.model.InvokeResponse;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +23,12 @@ public class CountryRestController {
     
     @Autowired
     private CountryService countryService;
+
+    @Autowired
+    private LambdaClient lambdaClient;
+
+    @Value("${aws.lambda.function.name}")
+    private String lambdaFunctionName;
     
     @GetMapping
     public ResponseEntity<List<Country>> getAllCountries() {
@@ -79,16 +88,16 @@ public class CountryRestController {
         return ResponseEntity.ok(statistics);
     }
     
-    @PostMapping
-    public ResponseEntity<?> createCountry(@Valid @RequestBody Country country) {
+      @PostMapping
+    public ResponseEntity<?> createCountry(@RequestBody Country country) {
         if (countryService.existsByName(country.getName())) {
             Map<String, String> error = new HashMap<>();
             error.put("error", "Country with name '" + country.getName() + "' already exists");
             return ResponseEntity.badRequest().body(error);
         }
-        
-        Country savedCountry = countryService.saveCountry(country);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedCountry);
+        Country saved = countryService.saveCountry(country);
+        triggerLambda("Country Added", saved.getName());
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
     
     @PutMapping("/{id}")
@@ -106,14 +115,16 @@ public class CountryRestController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCountry(@PathVariable Long id) {
         boolean deleted = countryService.deleteCountry(id);
+
         if (deleted) {
-            Map<String, String> message = new HashMap<>();
-            message.put("message", "Country deleted successfully");
-            return ResponseEntity.ok(message);
+            triggerLambda("Country Deleted", "ID=" + id);
+            Map<String, String> msg = new HashMap<>();
+            msg.put("message", "Country deleted successfully");
+            return ResponseEntity.ok(msg);
         } else {
             Map<String, String> error = new HashMap<>();
             error.put("error", "Country with ID " + id + " not found");
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
         }
     }
 
@@ -128,5 +139,17 @@ public class CountryRestController {
         response.put("message", "Created " + savedCountries.size() + " countries");
         response.put("countries", savedCountries);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    private void triggerLambda(String action, String details) {
+        String payload = String.format("{\"action\": \"%s\", \"details\": \"%s\"}", action, details);
+
+        InvokeRequest request = InvokeRequest.builder()
+                .functionName(LAMBDA_FUNCTION_NAME)
+                .payload(StandardCharsets.UTF_8.encode(payload))
+                .build();
+
+        InvokeResponse response = lambdaClient.invoke(request);
+        System.out.println("Lambda invoked: " + response.statusCode());
     }
 } 
